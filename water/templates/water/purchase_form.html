@@ -1,0 +1,50 @@
+{% extends "water/base.html" %}
+
+{% block title %}Record purchase · Gallon Tracker{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <a class="back-link" href="{% url 'water:purchase_list' %}">← Purchases</a>
+    <h1>Record a gallon purchase</h1>
+    <p>Choose the assigned buyer and enter the blue and pink gallon quantities.</p>
+</section>
+
+<form method="post" class="panel data-form wide-form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="form-error">{{ form.non_field_errors }}</div>{% endif %}
+
+    <div class="form-grid">
+        <div class="field">{{ form.participant.label_tag }}{{ form.participant }}{{ form.participant.errors }}</div>
+        <div class="field">{{ form.purchase_date.label_tag }}{{ form.purchase_date }}{{ form.purchase_date.errors }}</div>
+    </div>
+
+    <fieldset>
+        <legend>Gallon quantities and prices</legend>
+        <div class="color-entry blue-entry">
+            <strong>Blue gallons</strong>
+            <div class="form-grid">
+                <div class="field">{{ form.blue_quantity.label_tag }}{{ form.blue_quantity }}{{ form.blue_quantity.errors }}</div>
+                <div class="field">{{ form.blue_unit_price.label_tag }}{{ form.blue_unit_price }}{{ form.blue_unit_price.errors }}</div>
+            </div>
+        </div>
+        <div class="color-entry pink-entry">
+            <strong>Pink gallons</strong>
+            <div class="form-grid">
+                <div class="field">{{ form.pink_quantity.label_tag }}{{ form.pink_quantity }}{{ form.pink_quantity.errors }}</div>
+                <div class="field">{{ form.pink_unit_price.label_tag }}{{ form.pink_unit_price }}{{ form.pink_unit_price.errors }}</div>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="form-grid">
+        <div class="field">{{ form.payment_status.label_tag }}{{ form.payment_status }}{{ form.payment_status.errors }}</div>
+        <div class="field">{{ form.due_date.label_tag }}{{ form.due_date }}{% if form.due_date.help_text %}<small>{{ form.due_date.help_text }}</small>{% endif %}{{ form.due_date.errors }}</div>
+    </div>
+    <div class="field">{{ form.notes.label_tag }}{{ form.notes }}{{ form.notes.errors }}</div>
+
+    <div class="form-actions">
+        <button class="button primary" type="submit">Save purchase</button>
+        <a class="button quiet" href="{% url 'water:purchase_list' %}">Cancel</a>
+    </div>
+</form>
+{% endblock %}

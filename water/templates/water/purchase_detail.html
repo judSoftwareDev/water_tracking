@@ -1,0 +1,42 @@
+{% extends "water/base.html" %}
+
+{% block title %}{{ order.order_number }} · Gallon Tracker{% endblock %}
+
+{% block content %}
+<section class="page-heading split-heading">
+    <div>
+        <a class="back-link" href="{% url 'water:purchase_list' %}">← Purchases</a>
+        <h1>{{ order.order_number }}</h1>
+        <p>Assigned to <a href="{% url 'water:participant_detail' order.participant.pk %}">{{ order.participant.full_name }}</a> · {{ order.distributed_at|date:"F j, Y" }}</p>
+    </div>
+    <div class="button-row">
+        <span class="count-badge">{{ order.gallons.count }} gallon{{ order.gallons.count|pluralize }}</span>
+        <a class="button danger-outline" href="{% url 'water:purchase_delete' order.pk %}">Delete purchase</a>
+    </div>
+</section>
+
+{% if order.notes %}<div class="panel note"><strong>Notes</strong><p>{{ order.notes }}</p></div>{% endif %}
+
+<section class="section-block">
+    <div class="section-heading"><div><h2>Gallons in this purchase</h2><p>Each gallon can have its own color and payment status.</p></div></div>
+    <div class="gallon-grid">
+        {% for gallon in order.gallons.all %}
+        <article class="gallon-card {{ gallon.color|lower }}-gallon">
+            <div class="gallon-card-top">
+                <div>
+                    <span class="color-label">{{ gallon.get_color_display }}</span>
+                    <h3>Gallon {{ gallon.sequence_number }}</h3>
+                </div>
+                <span class="status status-{{ gallon.payment_status|lower }}">{{ gallon.get_payment_status_display }}</span>
+            </div>
+            <dl>
+                <div><dt>Price</dt><dd>₱{{ gallon.unit_price|floatformat:2 }}</dd></div>
+                <div><dt>Due date</dt><dd>{{ gallon.due_date|date:"M j, Y"|default:"—" }}</dd></div>
+                <div><dt>Paid on</dt><dd>{{ gallon.paid_at|date:"M j, Y"|default:"—" }}</dd></div>
+            </dl>
+            <a class="button secondary full-width" href="{% url 'water:gallon_status_update' gallon.pk %}">Update payment status</a>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

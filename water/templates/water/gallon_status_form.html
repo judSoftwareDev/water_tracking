@@ -1,0 +1,27 @@
+{% extends "water/base.html" %}
+
+{% block title %}Update gallon status · Gallon Tracker{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <a class="back-link" href="{% url 'water:purchase_detail' gallon.order.pk %}">← {{ gallon.order.order_number }}</a>
+    <h1>Update payment status</h1>
+    <p>{{ gallon.get_color_display }} gallon {{ gallon.sequence_number }} · {{ gallon.order.participant.full_name }}</p>
+</section>
+
+<form method="post" class="panel data-form">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="field{% if field.errors %} field-error{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+            {{ field.errors }}
+        </div>
+    {% endfor %}
+    <div class="form-actions">
+        <button class="button primary" type="submit">Update status</button>
+        <a class="button quiet" href="{% url 'water:purchase_detail' gallon.order.pk %}">Cancel</a>
+    </div>
+</form>
+{% endblock %}

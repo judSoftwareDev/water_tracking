@@ -1,0 +1,31 @@
+{% extends "water/base.html" %}
+
+{% block title %}Delete {{ order.order_number }} · Gallon Tracker{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <a class="back-link" href="{% url 'water:purchase_detail' order.pk %}">← {{ order.order_number }}</a>
+    <h1>Delete this purchase?</h1>
+    <p>Review the information carefully before continuing.</p>
+</section>
+
+<section class="panel delete-panel" aria-labelledby="delete-summary">
+    <div class="warning-mark" aria-hidden="true">!</div>
+    <div>
+        <h2 id="delete-summary">{{ order.order_number }}</h2>
+        <dl class="delete-summary">
+            <div><dt>Assigned buyer</dt><dd>{{ order.participant.full_name }}</dd></div>
+            <div><dt>Purchase date</dt><dd>{{ order.distributed_at|date:"F j, Y" }}</dd></div>
+            <div><dt>Gallons</dt><dd>{{ order.gallons.count }}</dd></div>
+        </dl>
+        <p class="warning-text">
+            This permanently deletes the purchase, all of its gallons, and their payment-status history. This action cannot be undone.
+        </p>
+        <form method="post" class="form-actions">
+            {% csrf_token %}
+            <button class="button danger" type="submit">Yes, delete purchase</button>
+            <a class="button secondary" href="{% url 'water:purchase_detail' order.pk %}">Cancel</a>
+        </form>
+    </div>
+</section>
+{% endblock %}

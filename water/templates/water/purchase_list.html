@@ -1,0 +1,36 @@
+{% extends "water/base.html" %}
+
+{% block title %}Purchases · Gallon Tracker{% endblock %}
+
+{% block content %}
+<section class="page-heading split-heading">
+    <div>
+        <p class="eyebrow">Purchase records</p>
+        <h1>Gallon purchases</h1>
+        <p>Every purchase and its assigned participant.</p>
+    </div>
+    <a class="button primary" href="{% url 'water:purchase_create' %}">Record a purchase</a>
+</section>
+
+<div class="table-wrap">
+    <table>
+        <thead><tr><th>Order</th><th>Assigned buyer</th><th>Date</th><th>Gallons</th><th>Actions</th></tr></thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td><strong>{{ order.order_number }}</strong></td>
+                <td><a href="{% url 'water:participant_detail' order.participant.pk %}">{{ order.participant.full_name }}</a></td>
+                <td>{{ order.distributed_at|date:"M j, Y" }}</td>
+                <td>{{ order.gallons.count }}</td>
+                <td class="table-actions">
+                    <a href="{% url 'water:purchase_detail' order.pk %}">View</a>
+                    <a class="danger-link" href="{% url 'water:purchase_delete' order.pk %}">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="empty-cell">No purchases recorded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "water/base.html" %}
+
+{% block title %}{{ title }} · Gallon Tracker{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <a class="back-link" href="{% url 'water:participant_list' %}">← Participants</a>
+    <h1>{{ title }}</h1>
+    <p>{{ subtitle }}</p>
+</section>
+
+<form method="post" class="panel data-form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="form-error">{{ form.non_field_errors }}</div>{% endif %}
+    {% for field in form %}
+        <div class="field{% if field.errors %} field-error{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+            {{ field.errors }}
+        </div>
+    {% endfor %}
+    <div class="form-actions">
+        <button class="button primary" type="submit">{{ submit_label }}</button>
+        <a class="button quiet" href="{% url 'water:participant_list' %}">Cancel</a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "water/base.html" %}
+
+{% block title %}{{ participant.full_name }} · Gallon Tracker{% endblock %}
+
+{% block content %}
+<section class="page-heading split-heading">
+    <div>
+        <a class="back-link" href="{% url 'water:participant_list' %}">← Participants</a>
+        <h1>{{ participant.full_name }}</h1>
+        <p>{{ participant.participant_number }}{% if participant.phone %} · {{ participant.phone }}{% endif %}</p>
+    </div>
+    <div class="button-row">
+        <a class="button secondary" href="{% url 'water:participant_edit' participant.pk %}">Edit</a>
+        <a class="button primary" href="{% url 'water:purchase_create' %}">Record purchase</a>
+    </div>
+</section>
+
+<section class="metric-grid compact" aria-label="Participant totals">
+    <article class="metric-card"><span>Total gallons</span><strong>{{ totals.total }}</strong></article>
+    <article class="metric-card paid-card"><span>Paid</span><strong>{{ totals.paid }}</strong></article>
+    <article class="metric-card unpaid-card"><span>Not paid</span><strong>{{ totals.not_paid }}</strong></article>
+    <article class="metric-card pending-card"><span>Will be paid</span><strong>{{ totals.will_be_paid }}</strong></article>
+</section>
+
+<section class="panel total-strip">
+    <div><span>Amount still outstanding</span><strong>₱{{ totals.outstanding|floatformat:2 }}</strong></div>
+</section>
+
+<section class="section-block">
+    <div class="section-heading"><div><h2>Purchase history</h2><p>All purchases assigned to this participant.</p></div></div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Order</th><th>Date</th><th>Gallons</th><th></th></tr></thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td><strong>{{ order.order_number }}</strong></td>
+                    <td>{{ order.distributed_at|date:"M j, Y" }}</td>
+                    <td>{{ order.gallons.count }}</td>
+                    <td><a href="{% url 'water:purchase_detail' order.pk %}">View purchase</a></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="empty-cell">No purchases recorded for this participant.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
