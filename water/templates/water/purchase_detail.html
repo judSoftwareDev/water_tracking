@@ -18,7 +18,25 @@
 {% if order.notes %}<div class="panel note"><strong>Notes</strong><p>{{ order.notes }}</p></div>{% endif %}
 
 <section class="section-block">
-    <div class="section-heading"><div><h2>Gallons in this purchase</h2><p>Each gallon can have its own color and payment status.</p></div></div>
+    <div class="section-heading"><div><h2>Purchase summary</h2><p>Quantities by color and the combined price of all gallons.</p></div></div>
+    <div class="purchase-summary" aria-label="Purchase totals">
+        <div class="summary-item blue-summary">
+            <span>Blue gallons</span>
+            <strong>{{ order.blue_gallon_count }}</strong>
+        </div>
+        <div class="summary-item pink-summary">
+            <span>Pink gallons</span>
+            <strong>{{ order.pink_gallon_count }}</strong>
+        </div>
+        <div class="summary-item price-summary">
+            <span>Total price</span>
+            <strong>₱{{ order.total_price|floatformat:2 }}</strong>
+        </div>
+    </div>
+</section>
+
+<section class="section-block">
+    <div class="section-heading"><div><h2>Gallons in this purchase</h2><p>Each gallon's price and payment status are shown below.</p></div></div>
     <div class="gallon-grid">
         {% for gallon in order.gallons.all %}
         <article class="gallon-card {{ gallon.color|lower }}-gallon">

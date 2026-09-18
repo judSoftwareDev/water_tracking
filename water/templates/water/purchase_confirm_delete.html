@@ -17,6 +17,7 @@
             <div><dt>Assigned buyer</dt><dd>{{ order.participant.full_name }}</dd></div>
             <div><dt>Purchase date</dt><dd>{{ order.distributed_at|date:"F j, Y" }}</dd></div>
             <div><dt>Gallons</dt><dd>{{ order.gallons.count }}</dd></div>
+            <div><dt>Total price</dt><dd>₱{{ order.total_price|floatformat:2 }}</dd></div>
         </dl>
         <p class="warning-text">
             This permanently deletes the purchase, all of its gallons, and their payment-status history. This action cannot be undone.

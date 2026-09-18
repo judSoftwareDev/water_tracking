@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from decimal import Decimal
 
 
 class Participant(models.Model):
@@ -46,6 +47,30 @@ class WaterOrder(models.Model):
 
     def __str__(self):
         return f"{self.order_number} - {self.participant.full_name}"
+
+    @property
+    def total_price(self):
+        """Return the combined price of every gallon in this purchase."""
+        return sum(
+            (gallon.unit_price for gallon in self.gallons.all()),
+            Decimal("0.00")
+        )
+
+    @property
+    def blue_gallon_count(self):
+        return sum(
+            1
+            for gallon in self.gallons.all()
+            if gallon.color == Gallon.GallonColor.BLUE
+        )
+
+    @property
+    def pink_gallon_count(self):
+        return sum(
+            1
+            for gallon in self.gallons.all()
+            if gallon.color == Gallon.GallonColor.PINK
+        )
 
     class Meta:
         verbose_name = "gallon purchase"

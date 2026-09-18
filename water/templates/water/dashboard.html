@@ -59,6 +59,7 @@
                     <th>Assigned buyer</th>
                     <th>Purchase date</th>
                     <th>Gallons</th>
+                    <th>Price</th>
                     <th></th>
                 </tr>
             </thead>
@@ -68,11 +69,15 @@
                     <td><strong>{{ order.order_number }}</strong></td>
                     <td>{{ order.participant.full_name }}</td>
                     <td>{{ order.distributed_at|date:"M j, Y" }}</td>
-                    <td>{{ order.gallons.count }}</td>
+                    <td>
+                        {{ order.gallons.count }}
+                        <span class="gallon-breakdown">{{ order.blue_gallon_count }} blue · {{ order.pink_gallon_count }} pink</span>
+                    </td>
+                    <td><strong>₱{{ order.total_price|floatformat:2 }}</strong></td>
                     <td><a href="{% url 'water:purchase_detail' order.pk %}">View</a></td>
                 </tr>
                 {% empty %}
-                <tr><td colspan="5" class="empty-cell">No purchases yet. Record your first purchase.</td></tr>
+                <tr><td colspan="6" class="empty-cell">No purchases yet. Record your first purchase.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

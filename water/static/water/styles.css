@@ -109,6 +109,8 @@ tbody tr:last-child td { border-bottom: 0; }
 tbody tr:hover { background: #fbfcfd; }
 .empty-cell { padding: 36px; color: var(--muted); text-align: center; }
 .muted { display: block; color: var(--muted); font-size: 12px; }
+.gallon-breakdown { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; }
+.purchase-gallon-counts { font-weight: 700; white-space: nowrap; }
 .table-actions { display: flex; gap: 14px; }
 .danger-link { color: var(--red); }
 
@@ -136,6 +138,14 @@ legend { margin-bottom: 10px; font-size: 17px; font-weight: 800; }
 .color-entry { margin-bottom: 12px; padding: 15px 16px 0; border: 1px solid var(--line); border-left-width: 5px; border-radius: 10px; }
 .blue-entry { border-left-color: var(--blue); background: var(--blue-soft); }
 .pink-entry { border-left-color: var(--pink); background: var(--pink-soft); }
+
+.purchase-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.summary-item { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 20px; background: white; border: 1px solid var(--line); border-left: 5px solid var(--primary); border-radius: 12px; box-shadow: var(--shadow); }
+.summary-item span { color: var(--muted); font-weight: 700; }
+.summary-item strong { font-size: 24px; }
+.blue-summary { border-left-color: var(--blue); background: var(--blue-soft); }
+.pink-summary { border-left-color: var(--pink); background: var(--pink-soft); }
+.price-summary { border-left-color: var(--green); }
 
 .gallon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .gallon-card { padding: 18px; background: white; border: 1px solid var(--line); border-top: 5px solid var(--blue); border-radius: var(--radius); box-shadow: var(--shadow); }
@@ -178,7 +188,7 @@ legend { margin-bottom: 10px; font-size: 17px; font-weight: 800; }
     .shell { width: min(100% - 22px, 1120px); }
     .page-content { padding-top: 28px; }
     .main-nav a { padding: 8px; font-size: 14px; }
-    .metric-grid, .form-grid, .gallon-grid { grid-template-columns: 1fr; }
+    .metric-grid, .form-grid, .gallon-grid, .purchase-summary { grid-template-columns: 1fr; }
     .compact { grid-template-columns: 1fr 1fr; }
     .total-strip, .section-heading { align-items: flex-start; flex-direction: column; }
     .search-form > div { flex-direction: column; }

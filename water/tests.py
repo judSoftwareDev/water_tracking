@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from decimal import Decimal
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -75,6 +76,9 @@ class CreateWaterOrderTests(TestCase):
             ).count(),
             1
         )
+        self.assertEqual(order.blue_gallon_count, 2)
+        self.assertEqual(order.pink_gallon_count, 1)
+        self.assertEqual(order.total_price, Decimal("155.00"))
 
 
 class UserInterfaceTests(TestCase):
@@ -117,6 +121,21 @@ class UserInterfaceTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Gallon.objects.count(), 2)
+
+        order = WaterOrder.objects.prefetch_related("gallons").get()
+        self.assertEqual(order.total_price, Decimal("105.00"))
+
+        list_response = self.client.get(reverse("water:purchase_list"))
+        self.assertContains(list_response, "1 blue · 1 pink")
+        self.assertContains(list_response, "₱105.00")
+
+        detail_response = self.client.get(
+            reverse("water:purchase_detail", args=[order.pk])
+        )
+        self.assertContains(detail_response, "Blue gallons")
+        self.assertContains(detail_response, "Pink gallons")
+        self.assertContains(detail_response, "Total price")
+        self.assertContains(detail_response, "₱105.00")
 
     def test_delete_confirmation_does_not_delete_on_get(self):
         order = create_mixed_water_order(

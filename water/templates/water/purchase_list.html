@@ -14,21 +14,26 @@
 
 <div class="table-wrap">
     <table>
-        <thead><tr><th>Order</th><th>Assigned buyer</th><th>Date</th><th>Gallons</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Order</th><th>Assigned buyer</th><th>Date</th><th>Gallons</th><th>Price</th><th>Actions</th></tr></thead>
         <tbody>
             {% for order in orders %}
             <tr>
                 <td><strong>{{ order.order_number }}</strong></td>
                 <td><a href="{% url 'water:participant_detail' order.participant.pk %}">{{ order.participant.full_name }}</a></td>
                 <td>{{ order.distributed_at|date:"M j, Y" }}</td>
-                <td>{{ order.gallons.count }}</td>
+                <td>
+                    <span class="purchase-gallon-counts">
+                        {{ order.blue_gallon_count }} blue · {{ order.pink_gallon_count }} pink
+                    </span>
+                </td>
+                <td><strong>₱{{ order.total_price|floatformat:2 }}</strong></td>
                 <td class="table-actions">
                     <a href="{% url 'water:purchase_detail' order.pk %}">View</a>
                     <a class="danger-link" href="{% url 'water:purchase_delete' order.pk %}">Delete</a>
                 </td>
             </tr>
             {% empty %}
-            <tr><td colspan="5" class="empty-cell">No purchases recorded yet.</td></tr>
+            <tr><td colspan="6" class="empty-cell">No purchases recorded yet.</td></tr>
             {% endfor %}
         </tbody>
     </table>
